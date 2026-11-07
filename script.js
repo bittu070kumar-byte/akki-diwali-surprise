@@ -19,12 +19,12 @@ audio.addEventListener('pause',()=>musicToggle.textContent='Play music');
 
 /* Interactive diyas */
 const teases=[
-  'Careful… keep looking at me like that and I might forget the fireworks.',
-  'I was going to make a wish, but then I remembered I already found you.',
-  'That smile of yours deserves its own celebration.',
-  'One little diya for the light, and one big crush for you.',
-  'If I were there, I would save the first sparkler moment just for us.',
-  'You make even the stars look a little less impressive.'
+  'Iss Diwali bas yahi dua hai ki tumhare ghar mein hamesha khushiyan bani rahein.',
+  'Ek baat batao, itna nakhra naturally aata hai ya practice karti hai?',
+  'Mithai se zyada meethi tumhari baatein hain… bas kabhi-kabhi mirchi bhi laga deti hai',
+  'Har Diwali tum apne family ke saath aise hi haste-muskurate manao.',
+  'Itni roshni toh tumhare nakhron mein bhi nahi hai.',
+  'Bas ek kami hai… aaj yahan nahi ho.'
 ];
 let teaseIndex=-1;
 const diyaButtons=[...document.querySelectorAll('.diya-button')];
