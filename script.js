@@ -19,12 +19,12 @@ audio.addEventListener('pause',()=>musicToggle.textContent='Play music');
 
 /* Interactive diyas */
 const teases=[
-'Itni roshni toh tumhare nakhron mein bhi nahi hai.',
-'Ek diya tumhare liye… baaki meri patience ke liye.',
-'Tumhari smile ke saamne yeh roshni bhi thodi kam hai.',
-'Ab ghar roshan hai, bas tumhara reply pending hai.',
-'Diya jal gaya, ab attitude thoda dim kar do.',
-'Tum ho toh festival, warna bas holiday.'
+  'Careful… keep looking at me like that and I might forget the fireworks.',
+  'I was going to make a wish, but then I remembered I already found you.',
+  'That smile of yours deserves its own celebration.',
+  'One little diya for the light, and one big crush for you.',
+  'If I were there, I would save the first sparkler moment just for us.',
+  'You make even the stars look a little less impressive.'
 ];
 let teaseIndex=-1;
 const diyaButtons=[...document.querySelectorAll('.diya-button')];
