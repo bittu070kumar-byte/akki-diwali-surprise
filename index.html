@@ -10,7 +10,6 @@
 <style>
 :root {
   --night:#1c1020;
-  --plum:#321b32;
   --gold:#d9b875;
   --gold2:#f4dfad;
   --cream:#fff5df;
@@ -46,29 +45,35 @@ button { font:inherit; }
   width:min(82vw,620px);
   aspect-ratio:1;
   z-index:-1;
+  animation:halo 8s ease-in-out infinite alternate;
 }
 .hero:after {
   width:min(65vw,480px);
   border-color:rgba(217,184,117,.13);
+  animation-delay:-4s;
 }
-.eyebrow {
-  letter-spacing:.34em;
+@keyframes halo {
+  from { transform:scale(.96); opacity:.5; }
+  to { transform:scale(1.04); opacity:1; }
+}
+.eyebrow,.kicker {
+  letter-spacing:.3em;
   text-transform:uppercase;
   font:11px Arial,sans-serif;
   color:var(--gold);
-  margin-bottom:24px;
 }
+.eyebrow { margin-bottom:24px; }
 h1 {
   font-size:clamp(46px,10vw,82px);
   font-weight:400;
   line-height:1.02;
   margin:0;
   color:var(--gold2);
-  text-shadow:0 5px 35px #e2a94b35;
-  animation:titleArrive 1.2s cubic-bezier(.2,.8,.2,1) both;
+  text-shadow:0 5px 35px #e2a94b55;
+  animation:titleArrive 1.2s ease both;
 }
 @keyframes titleArrive {
-  from { opacity:0; transform:translateY(18px); }
+  from { opacity:0; transform:translateY(22px); }
   to { opacity:1; transform:translateY(0); }
 }
 .hero p {
@@ -83,11 +88,11 @@ h1 {
   height:1px;
   background:linear-gradient(90deg,transparent,var(--gold),transparent);
   margin:24px auto;
-  animation:lineShimmer 4s ease-in-out infinite;
+  animation:lineShimmer 3s ease-in-out infinite;
 }
 @keyframes lineShimmer {
-  0%,100% { opacity:.55; transform:scaleX(.8); }
-  50% { opacity:1; transform:scaleX(1.15); }
+  0%,100% { opacity:.5; transform:scaleX(.8); }
+  50% { opacity:1; transform:scaleX(1.2); }
 }
 .btn {
   border:1px solid rgba(230,196,132,.7);
@@ -117,7 +122,7 @@ h1 {
   position:fixed;
   right:16px;
   top:16px;
-  z-index:20;
+  z-index:100;
   display:none;
 }
 .music-control.show { display:block; }
@@ -131,13 +136,7 @@ h1 {
   backdrop-filter:blur(10px);
 }
 section { padding:76px 0 26px; text-align:center; }
-.kicker {
-  font:10px Arial,sans-serif;
-  letter-spacing:.3em;
-  text-transform:uppercase;
-  color:var(--gold);
-  margin-bottom:14px;
-}
+.kicker { margin-bottom:14px; }
 h2 {
   font-weight:400;
   color:var(--gold2);
@@ -159,6 +158,7 @@ h2 {
 }
 .lyrics span { display:block; }
 
+/* Diyas */
 .diya-stage {
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
@@ -184,17 +184,15 @@ h2 {
   height:45px;
   position:relative;
   border-radius:12px 12px 48px 48px / 10px 10px 28px 28px;
-  background:linear-gradient(180deg,#c77b42 0%,#8b472b 45%,#4b261f 100%);
+  background:linear-gradient(180deg,#c77b42,#8b472b 45%,#4b261f);
   box-shadow:inset 0 5px 7px #f5c17b88,inset 0 -8px 12px #29110e,0 10px 18px #0007;
   transform:perspective(90px) rotateX(8deg);
-  transition:filter .3s;
+  animation:diyaGlow 3s ease-in-out infinite alternate;
 }
 .diya:before {
   content:"";
   position:absolute;
-  left:7px;
-  right:7px;
-  top:-5px;
+  left:7px; right:7px; top:-5px;
   height:15px;
   border-radius:50%;
   background:linear-gradient(180deg,#f2c18a,#8c4b2d 90%);
@@ -203,14 +201,11 @@ h2 {
 .diya:after {
   content:"";
   position:absolute;
-  left:50%;
-  top:-37px;
+  left:50%; top:-37px;
   transform:translateX(-50%) scale(.3);
-  width:18px;
-  height:32px;
+  width:18px; height:32px;
   border-radius:80% 10% 70% 50%;
   background:radial-gradient(ellipse at 55% 75%,#fff8c7 0 12%,#ffcf68 35%,#ed7d2e 65%,transparent 72%);
-  filter:blur(.3px);
   opacity:0;
   transition:all .35s;
 }
@@ -218,9 +213,19 @@ h2 {
   opacity:1;
   transform:translateX(-50%) scale(1);
   filter:drop-shadow(0 0 9px #ffb84d);
+  animation:flameDance 1.1s ease-in-out infinite alternate;
 }
 .diya-lit .diya {
-  box-shadow:inset 0 5px 7px #f5c17b88,inset 0 -8px 12px #29110e,0 0 28px #ffb84d66,0 10px 18px #0007;
+  box-shadow:inset 0 5px 7px #f5c17b88,inset 0 -8px 12px #29110e,0 0 28px #ffb84d77,0 10px 18px #0007;
+}
+@keyframes flameDance {
+  0% { transform:translateX(-53%) rotate(-5deg) scale(.92,1); }
+  50% { transform:translateX(-47%) rotate(4deg) scale(1.06,.94); }
+  100% { transform:translateX(-48%) rotate(5deg) scale(1.02,1.08); }
+}
+@keyframes diyaGlow {
+  from { filter:brightness(.94); }
+  to { filter:brightness(1.14); }
 }
 .diya-label {
   font:11px Arial,sans-serif;
@@ -238,7 +243,6 @@ h2 {
   transition:opacity .25s;
 }
 .tease.visible { opacity:1; }
-
 .controls {
   display:flex;
   justify-content:center;
@@ -246,6 +250,8 @@ h2 {
   flex-wrap:wrap;
   margin:20px auto;
 }
+
+/* Fireworks section */
 .cracker-grid {
   display:grid;
   grid-template-columns:repeat(2,minmax(0,1fr));
@@ -265,130 +271,78 @@ h2 {
   letter-spacing:.1em;
   text-transform:uppercase;
   transition:all .2s;
-  position:relative;
-  overflow:hidden;
 }
 .cracker:hover {
   border-color:var(--gold);
   transform:translateY(-2px);
   box-shadow:0 8px 25px #0004;
 }
-.cracker:before {
-  content:"";
-  position:absolute;
-  top:-60%;
-  left:-40%;
-  width:30%;
-  height:220%;
-  background:linear-gradient(90deg,transparent,#fff5d055,transparent);
-  transform:rotate(25deg);
-  transition:left .55s ease;
-}
-.cracker:hover:before { left:120%; }
-
-/* Fireworks drawn entirely with CSS */
 .burst {
   position:relative;
-  height:190px;
+  min-height:35px;
   overflow:hidden;
-  display:none;
-  opacity:1;
-  transform:none;
-}
-.burst.active {
-  display:block;
-  animation:none;
-}
-.firework-core {
-  position:absolute;
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:#fff4c6;
-  box-shadow:0 0 12px 5px #ffd27a,0 0 34px 12px #e49b4b88;
-  transform:translate(-50%,-50%);
-  animation:coreFlash .8s ease-out forwards;
-}
-.firework-ray {
-  position:absolute;
-  width:2px;
-  height:var(--ray-length);
-  border-radius:100%;
-  background:linear-gradient(to top,transparent,#fff4c6 35%,var(--ray-color));
-  transform-origin:50% 100%;
-  transform:translate(-50%,-100%) rotate(var(--ray-angle)) scaleY(.08);
-  filter:drop-shadow(0 0 5px var(--ray-color));
-  animation:rayBurst 1.15s cubic-bezier(.12,.7,.2,1) forwards;
-}
-.firework-ray:after {
-  content:"";
-  position:absolute;
-  top:-3px;
-  left:-2px;
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:#fff6d9;
-  box-shadow:0 0 9px 3px var(--ray-color);
-}
-@keyframes rayBurst {
-  0% { opacity:0; transform:translate(-50%,-100%) rotate(var(--ray-angle)) scaleY(.05); }
-  18% { opacity:1; }
-  75% { opacity:1; }
-  100% { opacity:0; transform:translate(-50%,-100%) rotate(var(--ray-angle)) scaleY(1); }
-}
-@keyframes coreFlash {
-  0% { opacity:0; transform:translate(-50%,-50%) scale(.1); }
-  25% { opacity:1; transform:translate(-50%,-50%) scale(1.5); }
-  100% { opacity:0; transform:translate(-50%,-50%) scale(.25); }
-}
-.firework-label {
-  position:absolute;
-  bottom:8px;
-  left:0;
-  right:0;
+  margin:12px auto;
   color:#f4dfad;
   font:10px Arial,sans-serif;
   letter-spacing:.25em;
   text-transform:uppercase;
-  animation:labelFade 1.5s ease forwards;
-}
-@keyframes labelFade {
-  0%,65% { opacity:1; }
-  100% { opacity:0; }
-}
-.spark {
-  position:fixed;
-  pointer-events:none;
-  width:3px;
-  height:3px;
-  border-radius:50%;
-  background:#fff0bc;
-  box-shadow:0 0 12px 3px #e9b85d;
-  animation:spark .9s ease-out forwards;
-  z-index:50;
-}
-@keyframes spark {
-  to { transform:translate(var(--x),var(--y)) scale(0); opacity:0; }
 }
 
-/* Flickering flames */
-.diya { animation:diyaGlow 3s ease-in-out infinite alternate; }
-.diya-lit .diya:after {
-  animation:flameDance 1.15s ease-in-out infinite alternate;
-  transform-origin:50% 100%;
+/* Full-screen realistic fireworks canvas */
+#realFireworksCanvas {
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:80;
 }
-.diya-lit .diya { animation:diyaGlow 1.8s ease-in-out infinite alternate; }
-.diya-lit .diya:before { box-shadow:0 0 12px #ffbd5c88; }
-@keyframes flameDance {
-  0% { transform:translateX(-53%) rotate(-5deg) scale(.92,1); }
-  35% { transform:translateX(-47%) rotate(4deg) scale(1.06,.94); }
-  70% { transform:translateX(-52%) rotate(-3deg) scale(.95,1.08); }
-  100% { transform:translateX(-48%) rotate(5deg) scale(1.02,.96); }
+.firework-label {
+  animation:labelFade 2.5s ease forwards;
 }
-@keyframes diyaGlow {
-  from { filter:brightness(.96); }
-  to { filter:brightness(1.14); }
+@keyframes labelFade {
+  0%,60% { opacity:1; }
+  100% { opacity:0; }
+}
+
+/* Message */
+.message-card {
+  max-width:650px;
+  margin:30px auto 0;
+  padding:0 26px;
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  border:1px solid transparent;
+  border-radius:18px;
+  background:linear-gradient(145deg,#382238,#211524);
+  transition:max-height 1s ease,opacity .8s ease,padding .8s ease,border-color .8s ease;
+}
+.message-card.open {
+  max-height:700px;
+  opacity:1;
+  padding:30px 26px;
+  border-color:#d9b87566;
+  box-shadow:0 15px 55px #0004;
+}
+.message-card p {
+  font-size:clamp(16px,3.5vw,19px);
+  line-height:2;
+  color:#f2e2ca;
+  margin:0;
+}
+.signature {
+  margin-top:25px;
+  color:var(--gold);
+  font-style:italic;
+  font-size:17px;
+}
+footer {
+  text-align:center;
+  color:#bca98f;
+  font-size:13px;
+  padding:65px 10px 10px;
+  font-style:italic;
 }
 @media(max-width:520px) {
   .page { padding-left:16px; padding-right:16px; }
@@ -400,28 +354,16 @@ h2 {
   .intro { font-size:15px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  *,*:before,*:after {
-    scroll-behavior:auto!important;
-    animation-duration:.01ms!important;
-    transition-duration:.01ms!important;
+  .hero:before,.hero:after,.diya,h1,.goldline {
+    animation:none!important;
   }
-}
-  #realFireworksCanvas {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 80;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #realFireworksCanvas { display: none; }
 }
 </style>
 </head>
 
 <body>
+
+<canvas id="realFireworksCanvas" aria-hidden="true"></canvas>
 
 <audio id="song" preload="auto" loop>
   <source src="udi-udi-jaye.mp3" type="audio/mpeg">
@@ -461,37 +403,37 @@ h2 {
 
   <div class="diya-stage" id="diyaStage">
     <div class="diya-wrap">
-      <button class="diya-button" data-diya="0" type="button" aria-label="Light diya one">
+      <button class="diya-button" type="button">
         <span class="diya"></span><span class="diya-label">Diya one</span>
       </button>
       <div class="tease"></div>
     </div>
     <div class="diya-wrap">
-      <button class="diya-button" data-diya="1" type="button" aria-label="Light diya two">
+      <button class="diya-button" type="button">
         <span class="diya"></span><span class="diya-label">Diya two</span>
       </button>
       <div class="tease"></div>
     </div>
     <div class="diya-wrap">
-      <button class="diya-button" data-diya="2" type="button" aria-label="Light diya three">
+      <button class="diya-button" type="button">
         <span class="diya"></span><span class="diya-label">Diya three</span>
       </button>
       <div class="tease"></div>
     </div>
     <div class="diya-wrap">
-      <button class="diya-button" data-diya="3" type="button" aria-label="Light diya four">
+      <button class="diya-button" type="button">
         <span class="diya"></span><span class="diya-label">Diya four</span>
       </button>
       <div class="tease"></div>
     </div>
     <div class="diya-wrap">
-      <button class="diya-button" data-diya="4" type="button" aria-label="Light diya five">
+      <button class="diya-button" type="button">
         <span class="diya"></span><span class="diya-label">Diya five</span>
       </button>
       <div class="tease"></div>
     </div>
     <div class="diya-wrap">
-      <button class="diya-button" data-diya="5" type="button" aria-label="Light diya six">
+      <button class="diya-button" type="button">
         <span class="diya"></span><span class="diya-label">Diya six</span>
       </button>
       <div class="tease"></div>
@@ -507,7 +449,7 @@ h2 {
 <section id="fireworks">
   <div class="kicker">Let the night sparkle</div>
   <h2>A little celebration</h2>
-  <p class="intro">Choose your favourite and send a little sparkle into the Diwali sky.</p>
+  <p class="intro">Choose your favourite and watch the Diwali sky come alive.</p>
 
   <div class="cracker-grid">
     <button class="cracker" data-fire="phuljhari" type="button">Phuljhari</button>
@@ -545,25 +487,22 @@ h2 {
 </main>
 
 <script>
+/* Music */
 const audio = document.getElementById('song');
 const begin = document.getElementById('begin');
 const note = document.getElementById('musicNote');
 const musicControl = document.getElementById('musicControl');
 const musicToggle = document.getElementById('musicToggle');
-let started = false;
 
 begin.addEventListener('click', async () => {
-  if (!started) {
-    try {
-      await audio.play();
-      started = true;
-      begin.textContent = 'Enjoy the evening';
-      note.textContent = 'Your song is playing in the background.';
-      musicControl.classList.add('show');
-      document.getElementById('lyrics').scrollIntoView({behavior:'smooth'});
-    } catch (e) {
-      note.textContent = 'Tap once more to play your song.';
-    }
+  try {
+    await audio.play();
+    begin.textContent = 'Enjoy the evening';
+    note.textContent = 'Your song is playing in the background.';
+    musicControl.classList.add('show');
+    document.getElementById('lyrics').scrollIntoView({behavior:'smooth'});
+  } catch (e) {
+    note.textContent = 'Tap once more to play your song.';
   }
 });
 
@@ -584,6 +523,7 @@ musicToggle.addEventListener('click', async () => {
 audio.addEventListener('play', () => musicToggle.textContent = 'Pause music');
 audio.addEventListener('pause', () => musicToggle.textContent = 'Play music');
 
+/* Interactive diyas */
 const teases = [
   'Itni roshni toh tumhare nakhron mein bhi nahi hai.',
   'Ek diya tumhare liye… baaki meri patience ke liye.',
@@ -615,101 +555,222 @@ diyaButtons.forEach(button =>
 );
 
 document.getElementById('lightAll').addEventListener('click', () => {
-  diyaButtons.forEach(b => lightDiya(b, false));
-
+  diyaButtons.forEach(button => lightDiya(button, false));
   const first = diyaButtons[0].parentElement.querySelector('.tease');
   first.textContent = 'All lit up… just like your talent for stealing the spotlight.';
   first.classList.add('visible');
 });
 
 document.getElementById('turnOff').addEventListener('click', () => {
-  diyaButtons.forEach(b => {
-    b.classList.remove('diya-lit');
-    const t = b.parentElement.querySelector('.tease');
-    t.textContent = '';
-    t.classList.remove('visible');
+  diyaButtons.forEach(button => {
+    button.classList.remove('diya-lit');
+    const tease = button.parentElement.querySelector('.tease');
+    tease.textContent = '';
+    tease.classList.remove('visible');
   });
 });
 
-document.getElementById('openMessage').addEventListener
+/* Realistic fireworks particle engine */
+const canvas = document.getElementById('realFireworksCanvas');
+const ctx = canvas.getContext('2d');
+const burst = document.getElementById('burst');
 
-const fireworkColors = [
-  '#f7d78d','#f1a85b','#f8e9c2','#d99bba','#e8bd68'
+let width = 0;
+let height = 0;
+let dpr = 1;
+
+const rockets = [];
+const particles = [];
+
+const colors = [
+  '#ffd166','#ff8c42','#ff4d6d','#b388ff',
+  '#64d8ff','#fff1b8','#ff9fca','#a8ffcf'
 ];
 
-const fireworkNames = {
-  phuljhari:'A little shower of light',
-  rocket:'Straight into the night',
-  skyshot:'A sky full of sparkle',
-  finale:'A Diwali night to remember'
-};
+function resizeCanvas() {
+  dpr = Math.min(window.devicePixelRatio || 1, 2);
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function launchRocket(x, targetY, color) {
+  rockets.push({
+    x,
+    y: height + 10,
+    vx: (Math.random() - 0.5) * 1.1,
+    vy: -(8 + Math.random() * 2.5),
+    targetY,
+    color
+  });
+}
+
+function explode(x, y, color, scale=1) {
+  const count = 140 + Math.floor(Math.random() * 65);
+
+  for (let i = 0; i < count; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = (1.2 + Math.random() * 5.2) * scale;
+
+    particles.push({
+      x, y, oldX:x, oldY:y,
+      vx:Math.cos(angle) * speed,
+      vy:Math.sin(angle) * speed,
+      life:75 + Math.random() * 45,
+      maxLife:120,
+      size:1 + Math.random() * 1.8,
+      color:Math.random() < .18 ? '#ffffff' : color,
+      gravity:.045
+    });
+  }
+
+  // Golden glitter sparks
+  for (let i = 0; i < 35; i++) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1 + Math.random() * 3;
+
+    particles.push({
+      x, y, oldX:x, oldY:y,
+      vx:Math.cos(angle) * speed,
+      vy:Math.sin(angle) * speed,
+      life:100 + Math.random() * 45,
+      maxLife:145,
+      size:1.5,
+      color:'#fff0bd',
+      gravity:.035
+    });
+  }
+}
 
 function launchFirework(type) {
-  burst.classList.remove('active');
   burst.replaceChildren();
-  void burst.offsetWidth;
 
-  const count = type === 'finale' ? 3 : (type === 'phuljhari' ? 1 : 2);
-
-  for (let b = 0; b < count; b++) {
-    const left = (b === 0 ? 30 : b === 1 ? 68 : 50) + '%';
-    const top = (b === 1 ? 38 : b === 2 ? 32 : 48) + '%';
-
-    const core = document.createElement('span');
-    core.className = 'firework-core';
-    core.style.left = left;
-    core.style.top = top;
-    burst.appendChild(core);
-
-    const rays = type === 'phuljhari' ? 22 : (type === 'finale' ? 30 : 25);
-
-    for (let i = 0; i < rays; i++) {
-      const ray = document.createElement('i');
-      ray.className = 'firework-ray';
-      ray.style.left = left;
-      ray.style.top = top;
-      ray.style.setProperty('--ray-angle', (i * (360 / rays)) + 'deg');
-      ray.style.setProperty('--ray-length', (type === 'finale' ? 46 : 37) + Math.random() * 24 + 'px');
-      ray.style.setProperty('--ray-color', fireworkColors[(i + b) % fireworkColors.length]);
-      ray.style.animationDelay = (b * 100 + Math.random() * 100) + 'ms';
-      burst.appendChild(ray);
-    }
-  }
+  const names = {
+    phuljhari:'A little shower of light',
+    rocket:'Straight into the night',
+    skyshot:'A sky full of sparkle',
+    finale:'A Diwali night to remember'
+  };
 
   const label = document.createElement('div');
   label.className = 'firework-label';
-  label.textContent = fireworkNames[type];
+  label.textContent = names[type];
   burst.appendChild(label);
-  burst.classList.add('active');
+
+  const count = type === 'finale' ? 7 :
+                type === 'phuljhari' ? 1 : 2;
+
+  for (let i = 0; i < count; i++) {
+    const x = width * (.15 + Math.random() * .7);
+    const targetY = height * (.13 + Math.random() * .35);
+    const color = colors[Math.floor(Math.random() * colors.length)];
+
+    setTimeout(() => launchRocket(x, targetY, color), i * 230);
+  }
+
+  // Additional overlapping rockets for the finale
+  if (type === 'finale') {
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        launchRocket(
+          width * (.12 + Math.random() * .76),
+          height * (.12 + Math.random() * .3),
+          colors[Math.floor(Math.random() * colors.length)]
+        );
+      }, 800 + i * 270);
+    }
+  }
 }
 
-document.querySelectorAll('.cracker').forEach(btn => {
-  btn.addEventListener('click', () => {
-    launchFirework(btn.dataset.fire);
-
-    const rect = btn.getBoundingClientRect();
-    const amount = btn.dataset.fire === 'finale' ? 36 : 18;
-
-    for (let i = 0; i < amount; i++) {
-      const s = document.createElement('i');
-      s.className = 'spark';
-      s.style.left = (rect.left + rect.width / 2) + 'px';
-      s.style.top = (rect.top + window.scrollY + rect.height / 2) + 'px';
-      s.style.setProperty('--x', (Math.random() * 240 - 120) + 'px');
-      s.style.setProperty('--y', (Math.random() * -190 - 10) + 'px');
-      document.body.appendChild(s);
-      setTimeout(() => s.remove(), 1000);
-    }
+document.querySelectorAll('.cracker').forEach(button => {
+  button.addEventListener('click', () => {
+    launchFirework(button.dataset.fire);
   });
 });
 
+/* Draw and animate rockets and sparks */
+function animateFireworks() {
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.fillStyle = 'rgba(12,7,17,0.20)';
+  ctx.fillRect(0, 0, width, height);
+
+  ctx.globalCompositeOperation = 'lighter';
+
+  // Rockets travelling upwards
+  for (let i = rockets.length - 1; i >= 0; i--) {
+    const rocket = rockets[i];
+
+    rocket.x += rocket.vx;
+    rocket.y += rocket.vy;
+    rocket.vy += .045;
+
+    ctx.beginPath();
+    ctx.moveTo(rocket.x, rocket.y + 12);
+    ctx.lineTo(rocket.x - rocket.vx * 2, rocket.y + 28);
+    ctx.strokeStyle = rocket.color;
+    ctx.lineWidth = 2.2;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = rocket.color;
+    ctx.stroke();
+
+    if (rocket.y <= rocket.targetY || rocket.vy >= -1) {
+      explode(rocket.x, rocket.y, rocket.color);
+      rockets.splice(i, 1);
+    }
+  }
+
+  // Expanding explosion particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+
+    p.oldX = p.x;
+    p.oldY = p.y;
+
+    p.x += p.vx;
+    p.y += p.vy;
+
+    p.vx *= .986;
+    p.vy = p.vy * .986 + p.gravity;
+    p.life--;
+
+    const alpha = Math.max(0, p.life / p.maxLife);
+
+    ctx.globalAlpha = alpha;
+    ctx.beginPath();
+    ctx.moveTo(p.oldX, p.oldY);
+    ctx.lineTo(p.x, p.y);
+    ctx.strokeStyle = p.color;
+    ctx.lineWidth = p.size;
+    ctx.shadowBlur = 11;
+    ctx.shadowColor = p.color;
+    ctx.stroke();
+
+    if (p.life <= 0) {
+      particles.splice(i, 1);
+    }
+  }
+
+  ctx.globalAlpha = 1;
+  ctx.shadowBlur = 0;
+  ctx.globalCompositeOperation = 'source-over';
+
+  requestAnimationFrame(animateFireworks);
+}
+
+requestAnimationFrame(animateFireworks);
+
+/* Reveal romantic message */
 document.getElementById('openMessage').addEventListener('click', () => {
   const card = document.getElementById('messageCard');
   card.classList.add('open');
   document.getElementById('openMessage').textContent = 'A little note, just for you';
-  card.scrollIntoView({behavior:'smooth',block:'center'});
+  card.scrollIntoView({behavior:'smooth', block:'center'});
 });
 </script>
-  <canvas id="realFireworksCanvas"></canvas>
+
 </body>
 </html>
