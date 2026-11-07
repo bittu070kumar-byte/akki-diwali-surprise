@@ -60,27 +60,51 @@ function resizeCanvas(){
 resizeCanvas();
 let resizeTimer;
 window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(resizeCanvas,120);});
-function launchRocket(x,targetY,color){
-  rockets.push({x,y:height+10,vx:(Math.random()-.5)*.8,vy:-(7+Math.random()*2),targetY,color});
+function launchRocket(x,targetY,color,scale=1){
+  rockets.push({x,y:height+10,vx:(Math.random()-.5)*.8,vy:-(7+Math.random()*2),targetY,color,scale});
   startAnimation();
 }
 function explode(x,y,color,scale=1){
-  const count=window.innerWidth<600?65:95;
+  const baseCount=window.innerWidth<600?65:95;
+  const count=Math.round(baseCount*scale);
   for(let i=0;i<count;i++){
     const angle=Math.random()*Math.PI*2,speed=(1.1+Math.random()*4.4)*scale;
-    particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:55+Math.random()*30,max:85,size:.8+Math.random()*1.3,color:Math.random()<.16?'#fff':color,gravity:.045});
+    particles.push({x,y,px:x,py:y,vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed,life:48+Math.random()*32,max:80,size:.8+Math.random()*1.3,color:Math.random()<.16?'#fff':color,gravity:.045});
   }
+}
+function launchPhuljhari(){
+  // Ground fountain: a fan of bright upward sparks, not an aerial rocket.
+  const originX=width*.5,originY=height*.78;
+  for(let i=0;i<150;i++){
+    const angle=-Math.PI+(Math.random()*Math.PI);
+    const speed=2.4+Math.random()*5.2;
+    const vx=Math.cos(angle)*speed*.62+(Math.random()-.5)*.8;
+    const vy=-Math.abs(Math.sin(angle))*speed-1.5;
+    const color=['#fff4c2','#ffd166','#ffad42','#fff'][Math.floor(Math.random()*4)];
+    particles.push({x:originX+(Math.random()-.5)*10,y:originY,px:originX,py:originY,vx,vy,life:24+Math.random()*24,max:48,size:.8+Math.random()*1.5,color,gravity:.13});
+  }
+  startAnimation();
 }
 function launchFirework(type){
   burst.replaceChildren();
-  const names={phuljhari:'A little shower of light',rocket:'Straight into the night',skyshot:'A sky full of sparkle',finale:'A Diwali night to remember'};
+  const names={phuljhari:'A sparkling fountain of light',rocket:'One rocket, one brilliant burst',skyshot:'A volley of colourful sky shots',finale:'A Diwali night to remember'};
   const label=document.createElement('div');label.className='firework-label';label.textContent=names[type];burst.appendChild(label);
-  const count=type==='finale'?5:type==='phuljhari'?1:2;
-  for(let i=0;i<count;i++){
-    const x=width*(.15+Math.random()*.7),targetY=height*(.13+Math.random()*.35),color=colors[Math.floor(Math.random()*colors.length)];
-    setTimeout(()=>launchRocket(x,targetY,color),i*220);
+  if(type==='phuljhari'){launchPhuljhari();return;}
+  if(type==='rocket'){
+    launchRocket(width*.5,height*.2,'#ffb347',1.35);
+    return;
   }
-  if(type==='finale')for(let i=0;i<3;i++)setTimeout(()=>launchRocket(width*(.15+Math.random()*.7),height*(.12+Math.random()*.3),colors[Math.floor(Math.random()*colors.length)]),700+i*260);
+  if(type==='skyshot'){
+    const shots=[{x:width*.27,y:height*.24,color:'#64d8ff'},{x:width*.5,y:height*.15,color:'#ff4d6d'},{x:width*.73,y:height*.28,color:'#b388ff'}];
+    shots.forEach((shot,i)=>setTimeout(()=>launchRocket(shot.x,shot.y,shot.color,.72),i*360));
+    return;
+  }
+  // Grand finale: preserve the multi-rocket sequence.
+  for(let i=0;i<5;i++){
+    const x=width*(.15+Math.random()*.7),targetY=height*(.13+Math.random()*.35),color=colors[Math.floor(Math.random()*colors.length)];
+    setTimeout(()=>launchRocket(x,targetY,color,1),i*220);
+  }
+  for(let i=0;i<3;i++)setTimeout(()=>launchRocket(width*(.15+Math.random()*.7),height*(.12+Math.random()*.3),colors[Math.floor(Math.random()*colors.length)],1.05),700+i*260);
 }
 document.querySelectorAll('.cracker').forEach(button=>button.addEventListener('click',()=>launchFirework(button.dataset.fire)));
 function startAnimation(){if(!raf)raf=requestAnimationFrame(animateFireworks);}
@@ -93,7 +117,7 @@ function animateFireworks(timestamp){
     const r=rockets[i];r.x+=r.vx*delta;r.y+=r.vy*delta;r.vy+=.045*delta;
     ctx.beginPath();ctx.moveTo(r.x,r.y+8);ctx.lineTo(r.x-r.vx*2,r.y+20);
     ctx.strokeStyle=r.color;ctx.lineWidth=2;ctx.stroke();
-    if(r.y<=r.targetY||r.vy>=-1){explode(r.x,r.y,r.color);rockets.splice(i,1);}
+    if(r.y<=r.targetY||r.vy>=-1){explode(r.x,r.y,r.color,r.scale||1);rockets.splice(i,1);}
   }
   for(let i=particles.length-1;i>=0;i--){
     const p=particles[i];p.px=p.x;p.py=p.y;p.x+=p.vx*delta;p.y+=p.vy*delta;
@@ -112,3 +136,33 @@ document.getElementById('openMessage').addEventListener('click',()=>{
   document.getElementById('openMessage').textContent='A little note, just for you';
   card.scrollIntoView({behavior:'smooth',block:'center'});
 });
+
+/* Reveal the invitation after the visitor has viewed the open message. */
+const messageCardForReveal=document.getElementById('messageCard');
+const memoryInvitation=document.getElementById('memoryInvitation');
+const memoryReveal=document.getElementById('memoryReveal');
+const revealMemoriesButton=document.getElementById('revealMemories');
+if(messageCardForReveal&&memoryInvitation){
+  if('IntersectionObserver' in window){
+    const messageObserver=new IntersectionObserver(entries=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting&&messageCardForReveal.classList.contains('open')){
+          memoryInvitation.hidden=false;
+          messageObserver.disconnect();
+        }
+      });
+    },{threshold:.6});
+    messageObserver.observe(messageCardForReveal);
+  }else{
+    document.getElementById('openMessage').addEventListener('click',()=>setTimeout(()=>{memoryInvitation.hidden=false;},900));
+  }
+}
+if(revealMemoriesButton&&memoryReveal){
+  revealMemoriesButton.addEventListener('click',()=>{
+    memoryReveal.classList.add('visible');
+    memoryReveal.setAttribute('aria-hidden','false');
+    revealMemoriesButton.setAttribute('aria-expanded','true');
+    revealMemoriesButton.textContent='Your surprise is here';
+    memoryReveal.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+}

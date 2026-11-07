@@ -67,6 +67,10 @@
     <div class="signature">With all my warmth</div>
   </article>
 
+  <div class="memory-invitation" id="memoryInvitation" hidden>
+    <p class="memory-invitation-text">There's one more little surprise waiting for you.</p>
+    <button class="btn" id="revealMemories" type="button" aria-expanded="false" aria-controls="memoryReveal">Tap to reveal your surprise</button>
+  </div>
   <div class="memory-reveal" id="memoryReveal" aria-hidden="true">
     <div class="memory-heading">
       <div class="kicker">A little surprise after your note</div>
@@ -75,11 +79,11 @@
     </div>
     <div class="memory-gallery">
       <figure class="memory-photo">
-        <img src="diwali-memory-1.webp" alt="A couple celebrating Diwali together with sparklers" loading="lazy">
+        <div class="photo-frame"><img src="diwali-memory-1.webp" alt="A couple celebrating Diwali together with sparklers" loading="lazy"></div>
         <figcaption>A little sparkle, a lot of warmth.</figcaption>
       </figure>
       <figure class="memory-photo">
-        <img src="diwali-memory-2.webp" alt="A couple lighting a Diwali sparkler together" loading="lazy">
+        <div class="photo-frame"><img src="diwali-memory-2.webp" alt="A couple lighting a Diwali sparkler together" loading="lazy"></div>
         <figcaption>My favourite kind of celebration.</figcaption>
       </figure>
     </div>
